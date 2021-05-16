@@ -1,0 +1,7 @@
+	delete _chosen;    delete goalChildDiscovered;
+	//~ delete path;
+
+    //~ delete _child_fn;
+    //~ delete _existing_children;
+
+state enumeration tree

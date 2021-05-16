@@ -1,0 +1,12 @@
+Knapsack Commands:
+Enter: cd kn/
+Compile: g++ kn.cxx
+Run: ./a.out
+
+To use the already present test files,
+uncomment the lines, 
+lib = 1;
+sprintf(fname, "testfile");
+
+Output folder:
+kn/testcases/random/output/algo_name

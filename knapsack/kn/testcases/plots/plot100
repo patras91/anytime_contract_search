@@ -1,0 +1,10 @@
+set xlabel "Time(in milli seconds)"
+set ylabel " Solution-quality"
+set yrange [3800: 38760.0]
+set xrange [1.0:35.0]
+set size 0.9,0.9
+set terminal jpeg enhanced size 1280,1024
+set output "kn100k5.jpg"
+plot "100abeam_output.txt" using 3:2 title " anytime beam " with steps, "100awas_noutput.txt" using 3:2 title " AWA star " with steps, "100dfbb_output.txt" using 2:1 title " DFBB " with steps
+replot
+

@@ -1,0 +1,85 @@
+Algorithm: Anytime beam
+Input: Start_state
+Output: Anytime solutions and the optimal solution
+
+num_items : number of items 
+anytime_beam:                             
+   result <- 0                                             
+   bw <- 1
+  open <- list of open lists of each level
+  put start_state to open[1]   
+  level <- 1
+  
+  while open is not empty :
+  do:
+	count <- 0
+    while open[level] is not empty and count < bw :
+    do:
+      s <- get the best node from open[level]
+      count <- count + 1
+      if s is a goal state :                       
+        if profit(s) > result :
+          result <- profit(s)
+          report result
+	    endif
+        continue         
+	  endif
+	  if profit(s) <= result :
+	    continue
+	  endif
+	  Generate Children of s and put in open[level + 1]
+    endwhile
+
+	level <- level + 1
+	if level >= num_items :
+	  bw <- bw + 1
+      level <- 1 
+    endif
+  endwhile 
+  return result
+
+Algorithm: Anytime restricted open
+Input: Start_state
+Output: Anytime solutions and the optimal solution
+
+num_items : number of items 
+anytime restricted_open:
+  k <- 1
+  result <- 0
+  open <- list of open states
+  suspend <- list of states to be considered later
+  add start_state to open
+  while open or suspend is non-empty :
+  do:
+	if open is empty :
+	  k <- k+1
+	  while size(open) < k  and sus is non-empty do:
+	    s <- best node from suspend
+		add s to open
+      endwhile
+	endif
+    s <- best node from open
+    if result >= profit(s)
+	  continue
+	endif
+    if s is a goal state 
+      result <- profit(s)
+	  report result
+      if sus is empty :
+	    break
+	  else : 
+	    while open is non-empty :
+		  KNState *s = open->top();
+		  open->pop();
+		  delete s;
+		endwhile
+		continue
+	  endif
+	  continue
+	endif
+	
+	Generate Children of s 
+	Keep best k states in open and rest in suspend
+  endwhile
+  
+  return result

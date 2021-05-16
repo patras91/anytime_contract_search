@@ -1,0 +1,10 @@
+set xlabel "Time"
+set ylabel " Solution-quality"
+set yrange [408000.0:408500.0]
+set xrange [1.0:200.0]
+set size 0.9,0.9
+set terminal jpeg enhanced size 1280,1024
+set output "abeam1000.jpg"
+plot "1000abeam_output.txt" using 3:2 title " Anytime beam " with linespoints
+replot
+

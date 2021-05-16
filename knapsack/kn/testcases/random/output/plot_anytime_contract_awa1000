@@ -1,0 +1,11 @@
+set xlabel " Time "
+set ylabel " Solution "
+set yrange [40475.0:40485.0]
+set xrange [0.0:30.0]
+set size 0.9,0.9
+set linetype 1 linewidth 1.000
+set terminal jpeg enhanced size 1280,1024
+set output "awa_vs_anytime_contract_1000.jpg"
+plot "1000awas_noutput.txt" using 3:2 title " AWAS " with steps, "1000anytime_contract_output_1001_100100_1001.txt" using 3:2 title " Anytime Contract " with steps with line width 5
+replot
+

@@ -1,0 +1,10 @@
+set xlabel "Time (in seconds)"
+set ylabel " Solution-quality"
+set yrange [162820.0:162825.0]
+set xrange [250.0:1000.0]
+set size 0.9,0.9
+set terminal jpeg enhanced size 1280,1024
+set output "kn4000.jpg"
+plot "4000abeam_output.txt" using 3:2 title " anytime beam " with steps, "4000awas_noutput.txt" using 3:2 title " AWA star " with steps, "4000dfbb_output.txt" using 3:2 title " DFBB " with steps
+replot
+

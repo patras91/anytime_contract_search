@@ -1,0 +1,10 @@
+set xlabel "Time"
+set ylabel " Solution-quality"
+set yrange [121845.0:121850.0]
+set xrange [120.0:450.0]
+set size 0.9,0.9
+set terminal jpeg enhanced size 1280,1024
+set output "kn3000.jpg"
+plot "3000abeam_output.txt" using 3:2 title " anytime beam " with steps, "3000awas_noutput.txt" using 3:2 title " AWA star " with linespoints, "3000dfbb_output.txt" using 3:2 title " DFBB " with linespoints
+replot
+
