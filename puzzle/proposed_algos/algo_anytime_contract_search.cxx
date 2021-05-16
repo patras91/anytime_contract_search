@@ -33,6 +33,7 @@ int adjustContract(int oldC, int newLimit, int k[], int ExpCount[], int SuspendF
   double expR[bestSol];
   
   switch (mode) {
+   case 4:
    case 1: for(int i = 0; i<bestSol;i++) {
 			 expR[i] = (k[i] + ExpCount[i]);
 		   }
@@ -88,7 +89,7 @@ int adjustContract(int oldC, int newLimit, int k[], int ExpCount[], int SuspendF
   //~ return newLimit;
 //~ }
 
-int anytimeContractSearch(int MIN_C, int MAX_C, int res, FILE *fp, int refBeam,  int step) {
+int anytimeContractSearch( int res, FILE *fp, int spec[], int ref, int count) {
   //~ int NUM_QS = res;
   printf("OPT = %d\n",OPT);
   int k[MAX_D], suspendFlag[MAX_D], ExpCount[MAX_D];
@@ -98,7 +99,7 @@ int anytimeContractSearch(int MIN_C, int MAX_C, int res, FILE *fp, int refBeam, 
   HHeap** open = new HHeap*[MAX_D];
   
   for (int i = 0; i < MAX_D; i++) {
-	k[i] = MIN_C/MAX_D;
+	k[i] = spec[0]/MAX_D;
 	open[i] = new HHeap(0);
 	suspendFlag[i] = 0;
     ExpCount[i] = 0;
@@ -125,22 +126,30 @@ int anytimeContractSearch(int MIN_C, int MAX_C, int res, FILE *fp, int refBeam, 
     //~ ExpCount[i] = 0;
   //~ }
   int bestSol = res;
-  int oldSol = bestSol;
+  //~ int oldSol = bestSol;
 
-  bestSol = ContractSearch(MIN_C, k, bestSol, open, qh, clo, ExpCount, suspendFlag, fp, start_time);
-  //printf("best sol = %d\n", bestSol);
-  if(oldSol != bestSol) {
+  bestSol = ContractSearch(spec[0], k, bestSol, open, qh, clo, ExpCount, suspendFlag, fp, start_time);
+  //~ printf("best sol = %d\n", bestSol);
+  //~ if(oldSol != bestSol) {
   	//fprintf(fp, "%d %d %lf %ld %ld %d\n", MIN_C, bestSol, OPT*100.0/bestSol, CUR_MAX_MEM, NUM_NODES_GENERATED, (int)(time(NULL) - start_time));
-  	oldSol = bestSol;
-  }
-  int oldC = MIN_C;
+  	//~ oldSol = bestSol;
+  //~ }
+  int oldC = spec[0];
   
-  for(int contract = MIN_C+step; bestSol >= OPT && (int) (time(NULL) - start_time) < MAX_T && contract > 0; contract+=step) {
-
+  int contract = spec[1];
+  
+  for(int i = 1; bestSol >= OPT && (int) (time(NULL) - start_time) < MAX_T && contract > 0 && i < count; i++) {
+    contract = spec[i];
+    int contract_tmp = oldC;
+	while(contract - contract_tmp > ref) {
+	  contract_tmp = contract_tmp + ref;
+	  oldC = adjustContract(oldC, contract_tmp, k, ExpCount, suspendFlag, bestSol);
+      bestSol = ContractSearch(contract_tmp, k, bestSol, open, qh, clo, ExpCount, suspendFlag, fp, start_time);
+	}
     oldC = adjustContract(oldC, contract, k, ExpCount, suspendFlag, bestSol);
     bestSol = ContractSearch(contract, k, bestSol, open, qh, clo, ExpCount, suspendFlag, fp, start_time);
-    //printf("contract = %d sol = %d\n", contract, bestSol);
-    if(oldSol != bestSol) {
+    //~ printf("contract = %d sol = %d time  = %d\n", contract, bestSol, (int)(time(NULL) - start_time));
+    //~ if(oldSol != bestSol) {
         //~ char fname[100];
     	//~ sprintf(fname, "rankProfile/rank_profile_%d_%d_%d_%d_%d.txt", problem, MIN_C, MAX_C, step, contract);
     	//~ FILE *f = fopen(fname,"w");
@@ -151,8 +160,8 @@ int anytimeContractSearch(int MIN_C, int MAX_C, int res, FILE *fp, int refBeam, 
 		//~ fprintf(fp, "%d %d %lf %ld %ld %d\n", contract, bestSol, OPT*100.0/bestSol, CUR_MAX_MEM, NUM_NODES_GENERATED, (int)(time(NULL) - start_time));
 
     	//fflush(fp);
-    	oldSol = bestSol;
-    }
+    	//~ oldSol = bestSol;
+    //~ }
   } 
   for (int i = 0; i < MAX_D; i++) {
     open[i]->deleteAllStates();

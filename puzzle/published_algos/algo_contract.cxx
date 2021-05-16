@@ -113,7 +113,7 @@ int ContractSearch(int contract, int k[], int res, HHeap *q[], HHashtable *qh, H
 	if (s->IsGoalState ()) {
         res = s->GetFn ();
         //~ fprintf(fp, "%d %d %lf %ld %d\n", contract, res, (OPT * 100.0) / res, nexps, int(end_time - start_time)); 
-        fprintf(fp, "%d %d %lf %ld %ld %d\n", contract, res, OPT*100.0/res, CUR_MAX_MEM, NUM_NODES_EXPANDED, (int)(time(NULL) - start_time));
+        fprintf(fp, "%d %d %lf %ld %ld %d \n", contract, res, OPT*100.0/res, CUR_MAX_MEM, NUM_NODES_EXPANDED, (int)(time(NULL) - start_time));
         //printf( "%d %d %lf %ld %ld %d\n", contract, res, OPT*100.0/res, CUR_MAX_MEM, NUM_NODES_EXPANDED, (int)(time(NULL) - start_time));
         fflush(fp);
         delete s;
